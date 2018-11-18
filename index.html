@@ -1,19 +1,17 @@
 <html>
 
 <head>
-  <meta property="og:url" content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html
-" />
+  <meta property="og:url" content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="When Great Minds Don’t Think Alike" />
   <meta property="og:description" content="How much does culture influence creative thinking?" />
-  <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg
-" />
+  <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
   <link rel="stylesheet" href="css/materialize.min.css">
 </head>
 
 <body>
   <center>
-    <h1>Food Recipe</h1>
+    <h1><a href="index.html">Food Recipe</a></h1>
   </center>
   <div class="row">
     <div class="col s6 offset-s3">
@@ -27,7 +25,7 @@
     </div>
   </div>
 
-  
+
   <div id="fb-root"></div>
   <script>
     (function(d, s, id) {
@@ -35,20 +33,17 @@
       if (d.getElementById(id)) return;
       js = d.createElement(s);
       js.id = id;
-      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2
-';
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
   </script>
-  <script async src="https://platform.twitter.com/widgets.js
-" charset="utf-8"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
   <div class="row" id="contents">
 
   </div>
-  
+
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/materialize.min.js"></script>
   <script>
@@ -67,7 +62,6 @@
                   <div class="col s12 m3">
                   <div class="card large">
                   <a href="open.html?search=${data.q}&id=${i}">
-                  <div class="card">
                     <div class="card-image">
                       <img src="${c.recipe.image}">
                     </div>
@@ -75,13 +69,12 @@
                       <span class="card-title">${c.recipe.label}</span>
                       <span class="card-title">${c.recipe.yield} servings</span>
                     </div>
-                    </div>
                   </a>
                 </div>
                 </div>
               </div>
               </div>`
-                
+
               $('#contents').html(contentsData)
             })
           },
@@ -95,8 +88,7 @@
       $.ajaxSetup({
         cache: true
       });
-      $.getScript('https://connect.facebook.net/en_US/sdk.js
-', function() {
+      $.getScript('https://connect.facebook.net/en_US/sdk.js', function() {
         FB.init({
           appId: '{your-app-id}',
           version: 'v2.7' // or v2.1, v2.2, v2.3, ...
@@ -107,21 +99,7 @@
         });
       });
     });
-
   </script>
-
-  <!--
-  <script>
-    const Http = new XMLHttpRequest();
-    const url = 'https://api.edamam.com/search
-';
-    Http.open("GET", url);
-    Http.send();
-    Http.onreadystatechange = (e) => {
-      console.log(Http.responseText)
-    }
-  </script>
--->
 
 </body>
 
