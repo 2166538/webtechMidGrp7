@@ -1,77 +1,122 @@
-<!DOCTYPE html>
-  <html>
-    <head>
-      <!--Import Google Icon Font-->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<html>
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-        <nav>
-      <div class="nav-wrapper">
-    <a href="#" class="brand-logo">FOOD RECIPE</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="sass.html">TIMER</a></li>
-      <li><a href="badges.html">NUTRITIONAL ANALYSIS</a></li>
-    </ul>
-  </div>
-</nav>
-    <body>
-      <div class="row">
-    <div class="col s6">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/adobo.jpg">
-          <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+<head>
+  <meta property="og:url" content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="When Great Minds Don’t Think Alike" />
+  <meta property="og:description" content="How much does culture influence creative thinking?" />
+  <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+  <link rel="stylesheet" href="css/materialize.min.css">
+</head>
+
+<body>
+  <center>
+    <h1>Food Recipe</h1>
+  </center>
+  <div class="row">
+    <div class="col s6 offset-s3">
+      <form action="#" method="get" id="searchField">
+        <div class="input-field">
+          <input id="search" type="text">
+          <label for="search">search for food recipes</label>
         </div>
-        <div class="card-content">
-          <p>ADOBO DESCRIPTION HERE</p>
-        </div>
-      </div>
-    </div>
-<div class="col s6">
-  <div class="card">
-    <div class="card-image">
-      <img src="images/classic.jpg">
-      <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-    </div>
-    <div class="card-content">
-      <p>CHICKEN PORK ADOBO CLASSIC RECIPE DESCRIPTION HERE</p>
+        <center><button type="submit" class="waves-effect waves-light btn">search</button></center>
+      </form>
     </div>
   </div>
-</div>
-</div>
-<div class="row">
-<div class="col s6">
-<div class="card">
-  <div class="card-image">
-    <img src="images/porkadobo.jpg">
-    <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+
+  
+  <div id="fb-root"></div>
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  </script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+  <div class="row" id="contents">
+
   </div>
-  <div class="card-content">
-    <p>PORK ADOBO DESCRIPTION HERE</p>
-  </div>
-</div>
-</div>
-<div class="col s6">
-<div class="card">
-<div class="card-image">
-<img src="images/porkadobo.jpg">
-<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-</div>
-<div class="card-content">
-<p>CHICKEN ADOBO SA DILAW DESCRIPTION HERE</p>
-</div>
-</div>
-</div>
-</div>
+  
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#searchField').submit(function(evt) {
+        evt.preventDefault()
+        $.ajax({
+          type: 'GET',
+          url: https://api.edamam.com/search?q=${$('#search').val()}&app_id=eb3fc1c2&app_key=c0069ef329ad42af0ab77954821de835,
+          success: function(data) {
+            console.log(data);
+            var contentsData = ''
+            $.each(data.hits, function(i, c) {
+              contentsData +=
+                `<div class="z-depth-1">
+                  <div class="col s12 m3">
+                  <div class="card large">
+                  <a href="open.html?search=${data.q}&id=${i}">
+                  <div class="card">
+                    <div class="card-image">
+                      <img src="${c.recipe.image}">
+                    </div>
+                    <div class="card-content black-text">
+                      <span class="card-title">${c.recipe.label}</span>
+                      <span class="card-title">${c.recipe.yield} servings</span>
+                    </div>
+                    </div>
+                  </a>
+                </div>
+                </div>
+              </div>
+              </div>`
+                
+              $('#contents').html(contentsData)
+            })
+          },
+          error: function(err) {
+            console.log(err)
+          }
+        })
 
+      })
 
+      $.ajaxSetup({
+        cache: true
+      });
+      $.getScript('https://connect.facebook.net/en_US/sdk.js', function() {
+        FB.init({
+          appId: '{your-app-id}',
+          version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+        });
+        $('#loginbutton,#feedbutton').removeAttr('disabled');
+        FB.getLoginStatus(function() {
+          alert('ung callcback')
+        });
+      });
+    });
 
-      <!--JavaScript at end of body for optimized loading-->
-      <script type="text/javascript" src="js/materialize.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    </body>
-  </html>
+  </script>
+
+  <!--
+  <script>
+    const Http = new XMLHttpRequest();
+    const url = 'https://api.edamam.com/search';
+    Http.open("GET", url);
+    Http.send();
+    Http.onreadystatechange = (e) => {
+      console.log(Http.responseText)
+    }
+  </script>
+-->
+
+</body>
+
+</html>
