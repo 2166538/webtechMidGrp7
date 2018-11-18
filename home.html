@@ -1,5 +1,4 @@
 <html>
-
 <head>
   <meta property="og:url" content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
   <meta property="og:type" content="article" />
@@ -7,9 +6,14 @@
   <meta property="og:description" content="How much does culture influence creative thinking?" />
   <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
   <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/flipclock.css">
+	
 </head>
 
 <body>
+    
+		
+		
   <p><a href="index.html">Back to home</a></p>
   <center>
     <h1><a href="index.html">Food Recipe</a></h1>
@@ -35,8 +39,11 @@
 
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/materialize.min.js"></script>
+  <script src="js/flipclock.min.js"></script>
   <script>
     $(document).ready(function() {
+        
+    $('.modal').modal();
       var query = window.location.search
       query = query.substring(1, query.length)
       var queries = query.split('&')
@@ -44,9 +51,10 @@
 
       $.ajax({
         type: 'GET',
-        url: https://api.edamam.com/search?q=${queries[0].split('=')[1]}&app_id=eb3fc1c2&app_key=c0069ef329ad42af0ab77954821de835,
+        url: `https://api.edamam.com/search?q=${queries[0].split('=')[1]}&app_id=eb3fc1c2&app_key=c0069ef329ad42af0ab77954821de835`,
         success: function(data) {
           console.log(data);
+          
           var contentsData = ''
           $.each(data.hits, function(i, c) {
             if (i == parseInt(queries[1].split('=')[1])) {
@@ -64,6 +72,11 @@
                           <h6>Calories: ${c.recipe.calories} kcal</h6>
                           <h6>Total Weight: ${c.recipe.totalWeight} g</h6> 
                           <h6>Source: ${c.recipe.source}</h6>
+                         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nutritional Analysis</a>
+                            
+                          <h4>Share on:</h4>
+                          <a href="https://twitter.com/share?url=${c.recipe.url}" class="twitter-share-button" data-show-count="false">Tweet</a>
+                          <div class="fb-share-button" data-href="${c.recipe.url}" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${c.recipe.url}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>                 
                         </div>
                       </div>
                     </div>
@@ -71,8 +84,14 @@
                 </div>`
 
               $('#contents').html(contentsData)
+              $('#modalContent').html(`${showNutritionalAnaylsis(c.recipe.totalNutrients, c.recipe.healthLabels)}`)
             }
           })
+            
+            
+            var clock = $('.your-clock').FlipClock({
+               
+            });
         },
         error: function(err) {
           console.log(err)
@@ -97,32 +116,73 @@
     function showIngredients(ingredients) {
       var ings = ""
       $.each(ingredients, function(i, g) {
-        ings += <div class="card-title">${g.text}</div>
+        ings += `<div class="card-title">${g.text}</div>`
       })
       return ings
     }
-    $(document).ready(function() {
-      $('.modal').modal();
-    });
+      
+      function showNutritionalAnaylsis(nutritions, healthLabels){
+        
+         var ings = "";
+        
+          console.log(healthLabels);
+          ings += `<h4>Nutrional Analysis</h4>`;
+          ings += `<h5> Health Labels </h5>`;
+          $.each(healthLabels, function(i, g) {
+            ings += `<div class="card-title">${g}</div>`
+           })
+          
+          ings += `<h5> Total Nutrients </h5>`;
+          ings += `<div class="card-title"> ${nutritions.CA.label}: ${nutritions.CA.quantity} ${nutritions.CA.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.CHOCDF.label}: ${nutritions.CHOCDF.quantity} ${nutritions.CHOCDF.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.ENERC_KCAL.label}: ${nutritions.ENERC_KCAL.quantity} ${nutritions.ENERC_KCAL.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.FAMS.label}: ${nutritions.FAMS.quantity} ${nutritions.FAMS.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.FAPU.label}: ${nutritions.FAPU.quantity} ${nutritions.FAPU.unit}</div>`;
+          
+          ings += `<div class="card-title"> ${nutritions.FASAT.label}: ${nutritions.FASAT.quantity} ${nutritions.FASAT.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.FAT.label}: ${nutritions.FAT.quantity} ${nutritions.FAT.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.FE.label}: ${nutritions.FE.quantity} ${nutritions.FE.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.FIBTG.label}: ${nutritions.FIBTG.quantity} ${nutritions.FIBTG.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.FOLDFE.label}: ${nutritions.FOLDFE.quantity} ${nutritions.FOLDFE.unit}</div>`;
+          
+          ings += `<div class="card-title"> ${nutritions.FOLFD.label}: ${nutritions.FOLFD.quantity} ${nutritions.FOLFD.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.K.label}: ${nutritions.K.quantity} ${nutritions.K.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.MG.label}: ${nutritions.MG.quantity} ${nutritions.MG.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.NA.label}: ${nutritions.NA.quantity} ${nutritions.NA.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.NIA.label}: ${nutritions.NIA.quantity} ${nutritions.NIA.unit}</div>`;
+          
+          ings += `<div class="card-title"> ${nutritions.P.label}: ${nutritions.P.quantity} ${nutritions.P.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.PROCNT.label}: ${nutritions.PROCNT.quantity} ${nutritions.PROCNT.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.RIBF.label}: ${nutritions.RIBF.quantity} ${nutritions.RIBF.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.SUGAR.label}: ${nutritions.SUGAR.quantity} ${nutritions.SUGAR.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.THIA.label}: ${nutritions.THIA.quantity} ${nutritions.THIA.unit}</div>`;
+          
+          ings += `<div class="card-title"> ${nutritions.TOCPHA.label}: ${nutritions.TOCPHA.quantity} ${nutritions.TOCPHA.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.VITA_RAE.label}: ${nutritions.VITA_RAE.quantity} ${nutritions.VITA_RAE.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.VITB6A.label}: ${nutritions.VITB6A.quantity} ${nutritions.VITB6A.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.VITB12.label}: ${nutritions.VITB12.quantity} ${nutritions.VITB12.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.VITC.label}: ${nutritions.VITC.quantity} ${nutritions.VITC.unit}</div>`;
+          
+          ings += `<div class="card-title"> ${nutritions.VITK1.label}: ${nutritions.VITK1.quantity} ${nutritions.VITK1.unit}</div>`;
+          ings += `<div class="card-title"> ${nutritions.ZN.label}: ${nutritions.ZN.quantity} ${nutritions.ZN.unit}</div>`;
+          
+          return ings;
+          
+      }
+      
+      
+    
   </script>
-  
-  <center>
-    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal">
-      <div class="modal-content">
-        <h4>Nutrient Analysis</h4>
-        <p>A bunch of text</p>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-      </div>
-    </div>
-    <h4>Share on:</h4>
-    <a href="https://twitter.com/share?url=${c.recipe.url}" class="twitter-share-button" data-show-count="false">Tweet</a>
-    <div class="fb-share-button" data-href="${c.recipe.url}" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${c.recipe.url}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
-  </center>
-
+   
+<div id="modal1" class="modal">
+                            <div class="modal-content" id="modalContent">
+                                <h4>Nutritional Anaylsis</h4>
+                                    
+                                </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                            </div>
+                          </div>
 </body>
 
 </html>
