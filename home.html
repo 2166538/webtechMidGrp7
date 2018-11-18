@@ -51,7 +51,7 @@
 
       $.ajax({
         type: 'GET',
-        url: `https://api.edamam.com/search?q=${queries[0].split('=')[1]}&app_id=eb3fc1c2&app_key=c0069ef329ad42af0ab77954821de835`,
+        url: https://api.edamam.com/search?q=${queries[0].split('=')[1]}&app_id=eb3fc1c2&app_key=c0069ef329ad42af0ab77954821de835,
         success: function(data) {
           console.log(data);
           
@@ -84,7 +84,7 @@
                 </div>`
 
               $('#contents').html(contentsData)
-              $('#modalContent').html(`${showNutritionalAnaylsis(c.recipe.totalNutrients, c.recipe.healthLabels)}`)
+              $('#modalContent').html(${showNutritionalAnaylsis(c.recipe.totalNutrients, c.recipe.healthLabels)})
             }
           })
             
@@ -116,7 +116,7 @@
     function showIngredients(ingredients) {
       var ings = ""
       $.each(ingredients, function(i, g) {
-        ings += `<div class="card-title">${g.text}</div>`
+        ings += <div class="card-title">${g.text}</div>
       })
       return ings
     }
@@ -126,45 +126,45 @@
          var ings = "";
         
           console.log(healthLabels);
-          ings += `<h4>Nutrional Analysis</h4>`;
-          ings += `<h5> Health Labels </h5>`;
+          ings += <h4>Nutrional Analysis</h4>;
+          ings += <h5> Health Labels </h5>;
           $.each(healthLabels, function(i, g) {
-            ings += `<div class="card-title">${g}</div>`
+            ings += <div class="card-title">${g}</div>
            })
           
-          ings += `<h5> Total Nutrients </h5>`;
-          ings += `<div class="card-title"> ${nutritions.CA.label}: ${nutritions.CA.quantity} ${nutritions.CA.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.CHOCDF.label}: ${nutritions.CHOCDF.quantity} ${nutritions.CHOCDF.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.ENERC_KCAL.label}: ${nutritions.ENERC_KCAL.quantity} ${nutritions.ENERC_KCAL.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FAMS.label}: ${nutritions.FAMS.quantity} ${nutritions.FAMS.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FAPU.label}: ${nutritions.FAPU.quantity} ${nutritions.FAPU.unit}</div>`;
+          ings += <h5> Total Nutrients </h5>;
+          ings += <div class="card-title"> ${nutritions.CA.label}: ${nutritions.CA.quantity} ${nutritions.CA.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.CHOCDF.label}: ${nutritions.CHOCDF.quantity} ${nutritions.CHOCDF.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.ENERC_KCAL.label}: ${nutritions.ENERC_KCAL.quantity} ${nutritions.ENERC_KCAL.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.FAMS.label}: ${nutritions.FAMS.quantity} ${nutritions.FAMS.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.FAPU.label}: ${nutritions.FAPU.quantity} ${nutritions.FAPU.unit}</div>;
           
-          ings += `<div class="card-title"> ${nutritions.FASAT.label}: ${nutritions.FASAT.quantity} ${nutritions.FASAT.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FAT.label}: ${nutritions.FAT.quantity} ${nutritions.FAT.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FE.label}: ${nutritions.FE.quantity} ${nutritions.FE.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FIBTG.label}: ${nutritions.FIBTG.quantity} ${nutritions.FIBTG.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FOLDFE.label}: ${nutritions.FOLDFE.quantity} ${nutritions.FOLDFE.unit}</div>`;
+          ings += <div class="card-title"> ${nutritions.FASAT.label}: ${nutritions.FASAT.quantity} ${nutritions.FASAT.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.FAT.label}: ${nutritions.FAT.quantity} ${nutritions.FAT.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.FE.label}: ${nutritions.FE.quantity} ${nutritions.FE.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.FIBTG.label}: ${nutritions.FIBTG.quantity} ${nutritions.FIBTG.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.FOLDFE.label}: ${nutritions.FOLDFE.quantity} ${nutritions.FOLDFE.unit}</div>;
           
-          ings += `<div class="card-title"> ${nutritions.FOLFD.label}: ${nutritions.FOLFD.quantity} ${nutritions.FOLFD.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.K.label}: ${nutritions.K.quantity} ${nutritions.K.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.MG.label}: ${nutritions.MG.quantity} ${nutritions.MG.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.NA.label}: ${nutritions.NA.quantity} ${nutritions.NA.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.NIA.label}: ${nutritions.NIA.quantity} ${nutritions.NIA.unit}</div>`;
+          ings += <div class="card-title"> ${nutritions.FOLFD.label}: ${nutritions.FOLFD.quantity} ${nutritions.FOLFD.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.K.label}: ${nutritions.K.quantity} ${nutritions.K.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.MG.label}: ${nutritions.MG.quantity} ${nutritions.MG.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.NA.label}: ${nutritions.NA.quantity} ${nutritions.NA.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.NIA.label}: ${nutritions.NIA.quantity} ${nutritions.NIA.unit}</div>;
           
-          ings += `<div class="card-title"> ${nutritions.P.label}: ${nutritions.P.quantity} ${nutritions.P.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.PROCNT.label}: ${nutritions.PROCNT.quantity} ${nutritions.PROCNT.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.RIBF.label}: ${nutritions.RIBF.quantity} ${nutritions.RIBF.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.SUGAR.label}: ${nutritions.SUGAR.quantity} ${nutritions.SUGAR.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.THIA.label}: ${nutritions.THIA.quantity} ${nutritions.THIA.unit}</div>`;
+          ings += <div class="card-title"> ${nutritions.P.label}: ${nutritions.P.quantity} ${nutritions.P.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.PROCNT.label}: ${nutritions.PROCNT.quantity} ${nutritions.PROCNT.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.RIBF.label}: ${nutritions.RIBF.quantity} ${nutritions.RIBF.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.SUGAR.label}: ${nutritions.SUGAR.quantity} ${nutritions.SUGAR.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.THIA.label}: ${nutritions.THIA.quantity} ${nutritions.THIA.unit}</div>;
           
-          ings += `<div class="card-title"> ${nutritions.TOCPHA.label}: ${nutritions.TOCPHA.quantity} ${nutritions.TOCPHA.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITA_RAE.label}: ${nutritions.VITA_RAE.quantity} ${nutritions.VITA_RAE.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITB6A.label}: ${nutritions.VITB6A.quantity} ${nutritions.VITB6A.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITB12.label}: ${nutritions.VITB12.quantity} ${nutritions.VITB12.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITC.label}: ${nutritions.VITC.quantity} ${nutritions.VITC.unit}</div>`;
+          ings += <div class="card-title"> ${nutritions.TOCPHA.label}: ${nutritions.TOCPHA.quantity} ${nutritions.TOCPHA.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.VITA_RAE.label}: ${nutritions.VITA_RAE.quantity} ${nutritions.VITA_RAE.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.VITB6A.label}: ${nutritions.VITB6A.quantity} ${nutritions.VITB6A.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.VITB12.label}: ${nutritions.VITB12.quantity} ${nutritions.VITB12.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.VITC.label}: ${nutritions.VITC.quantity} ${nutritions.VITC.unit}</div>;
           
-          ings += `<div class="card-title"> ${nutritions.VITK1.label}: ${nutritions.VITK1.quantity} ${nutritions.VITK1.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.ZN.label}: ${nutritions.ZN.quantity} ${nutritions.ZN.unit}</div>`;
+          ings += <div class="card-title"> ${nutritions.VITK1.label}: ${nutritions.VITK1.quantity} ${nutritions.VITK1.unit}</div>;
+          ings += <div class="card-title"> ${nutritions.ZN.label}: ${nutritions.ZN.quantity} ${nutritions.ZN.unit}</div>;
           
           return ings;
           
