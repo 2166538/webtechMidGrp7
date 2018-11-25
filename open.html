@@ -1,23 +1,18 @@
+<!doctype html>
+
 <html>
 <head>
-  <meta property="og:url" content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="When Great Minds Don’t Think Alike" />
-  <meta property="og:description" content="How much does culture influence creative thinking?" />
-  <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+  <title>Food Recipe</title>
   <link rel="stylesheet" href="css/materialize.min.css">
   <link rel="stylesheet" href="css/flipclock.css">
-	
+
 </head>
 
 <body>
-    
-		
-		
-  <p><a href="index.html">Back to home</a></p>
-  <center>
+  <a class="waves-effect waves-light btn-small" href="index.html">Back to Home</a>
+  <div style="display: flex; justify-content: center;">
     <h1><a href="index.html">Food Recipe</a></h1>
-  </center>
+  </div>
 
   <!-- Load facebook SDK -->
   <div id="fb-root"></div>
@@ -30,61 +25,66 @@
       js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
   </script>
+
+  <div class="row" id="contents"></div>
+
+  <!-- Twitter share initilization  -->
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-  <div class="row" id="contents">
-
-  </div>
-
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/materialize.min.js"></script>
   <script src="js/flipclock.min.js"></script>
+  <script src="https://apis.google.com/js/client.js?onload=init"></script>
+
   <script>
     $(document).ready(function() {
-        
-    $('.modal').modal();
+
+      //Nutritional analysis modal screen 
+      $('.modal').modal();
       var query = window.location.search
       query = query.substring(1, query.length)
       var queries = query.split('&')
-      console.log(queries)
 
+      // Edamam API initialization
       $.ajax({
         type: 'GET',
         url: `https://api.edamam.com/search?q=${queries[0].split('=')[1]}&app_id=eb3fc1c2&app_key=c0069ef329ad42af0ab77954821de835`,
         success: function(data) {
-          console.log(data);
-          
+          //Edamam Recipe search content
           var contentsData = ''
+
           $.each(data.hits, function(i, c) {
             if (i == parseInt(queries[1].split('=')[1])) {
               contentsData +=
                 `<div class="z-depth-1">
-                  <center>
-                    <div class="col s12">
-                      <div class="card-image">
-                        <img src="${c.recipe.image}">
-                        <div class="card-content black-text">
-                          <h5 class="card-title">${c.recipe.label}</h3>
+                <center>
+                  <div class="col s12">
+                    <div class="card-image">
+                      <img src="${c.recipe.image}">
+                      <div class="card-content black-text">
+                        <h5 class="card-title" id="recipeLabel">${searchYT(c.recipe.label)}</h3>
                           <span class="card-title">${c.recipe.yield} servings</span>
                           <p>Ingredients:</p>
                           ${showIngredients(c.recipe.ingredients)}
                           <h6>Calories: ${c.recipe.calories} kcal</h6>
                           <h6>Total Weight: ${c.recipe.totalWeight} g</h6> 
                           <h6>Source: ${c.recipe.source}</h6>
-                         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nutritional Analysis</a>
-                            <center>
-                                 <div class="your-clock">
-                                
-                                 </div> 
-                                <button class="waves-effect waves-light btn" onclick="startClock()">Start</button>
-                                <button class="waves-effect waves-light btn" onclick="resetClock()">Reset</button>
-
-                            </center>
+                          <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nutritional Analysis</a>
+                          <center>
+                            <div class="your-clock">
+                              
+                            </div> 
+                            <button class="waves-effect waves-light btn" onclick="startClock()">Start</button>
+                            <button class="waves-effect waves-light btn" onclick="resetClock()">Reset</button>
+                            
+                          </center>
                           <h4>Share on:</h4>
-                          <a href="https://twitter.com/share?url=${c.recipe.url}" class="twitter-share-button" data-show-count="false">Tweet</a>
+                          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Twitter</a>
+                          
                           <div class="fb-share-button" data-href="${c.recipe.url}" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${c.recipe.url}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Facebook</a></div>                 
+                          <h4>Watch on Youtube:</h4>
+                          <div id="player"></div>
                         </div>
                       </div>
                     </div>
@@ -95,17 +95,18 @@
               $('#modalContent').html(`${showNutritionalAnaylsis(c.recipe.totalNutrients, c.recipe.healthLabels)}`)
             }
           })
-            
-            
-            var clock = $('.your-clock').FlipClock({
-               
-            });
+
+          // flipclock js
+          var clock = $('.your-clock').FlipClock({
+
+          });
         },
         error: function(err) {
           console.log(err)
         }
       })
 
+      // facbook share initialization
       $.ajaxSetup({
         cache: true
       });
@@ -121,6 +122,7 @@
       });
     });
 
+    //show all ingredients stored inside an array
     function showIngredients(ingredients) {
       var ings = ""
       $.each(ingredients, function(i, g) {
@@ -128,93 +130,116 @@
       })
       return ings
     }
-      
-      function showNutritionalAnaylsis(nutritions, healthLabels){
-        
-         var ings = "";
-        
-          console.log(healthLabels);
-          ings += `<h4>Nutrional Analysis</h4>`;
-          ings += `<h5> Health Labels </h5>`;
-          $.each(healthLabels, function(i, g) {
-            ings += `<div class="card-title">${g}</div>`
-           })
-          
-          ings += `<h5> Total Nutrients </h5>`;
-          ings += `<div class="card-title"> ${nutritions.CA.label}: ${nutritions.CA.quantity} ${nutritions.CA.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.CHOCDF.label}: ${nutritions.CHOCDF.quantity} ${nutritions.CHOCDF.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.ENERC_KCAL.label}: ${nutritions.ENERC_KCAL.quantity} ${nutritions.ENERC_KCAL.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FAMS.label}: ${nutritions.FAMS.quantity} ${nutritions.FAMS.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FAPU.label}: ${nutritions.FAPU.quantity} ${nutritions.FAPU.unit}</div>`;
-          
-          ings += `<div class="card-title"> ${nutritions.FASAT.label}: ${nutritions.FASAT.quantity} ${nutritions.FASAT.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FAT.label}: ${nutritions.FAT.quantity} ${nutritions.FAT.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FE.label}: ${nutritions.FE.quantity} ${nutritions.FE.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FIBTG.label}: ${nutritions.FIBTG.quantity} ${nutritions.FIBTG.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.FOLDFE.label}: ${nutritions.FOLDFE.quantity} ${nutritions.FOLDFE.unit}</div>`;
-          
-          ings += `<div class="card-title"> ${nutritions.FOLFD.label}: ${nutritions.FOLFD.quantity} ${nutritions.FOLFD.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.K.label}: ${nutritions.K.quantity} ${nutritions.K.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.MG.label}: ${nutritions.MG.quantity} ${nutritions.MG.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.NA.label}: ${nutritions.NA.quantity} ${nutritions.NA.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.NIA.label}: ${nutritions.NIA.quantity} ${nutritions.NIA.unit}</div>`;
-          
-          ings += `<div class="card-title"> ${nutritions.P.label}: ${nutritions.P.quantity} ${nutritions.P.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.PROCNT.label}: ${nutritions.PROCNT.quantity} ${nutritions.PROCNT.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.RIBF.label}: ${nutritions.RIBF.quantity} ${nutritions.RIBF.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.SUGAR.label}: ${nutritions.SUGAR.quantity} ${nutritions.SUGAR.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.THIA.label}: ${nutritions.THIA.quantity} ${nutritions.THIA.unit}</div>`;
-          
-          ings += `<div class="card-title"> ${nutritions.TOCPHA.label}: ${nutritions.TOCPHA.quantity} ${nutritions.TOCPHA.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITA_RAE.label}: ${nutritions.VITA_RAE.quantity} ${nutritions.VITA_RAE.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITB6A.label}: ${nutritions.VITB6A.quantity} ${nutritions.VITB6A.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITB12.label}: ${nutritions.VITB12.quantity} ${nutritions.VITB12.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.VITC.label}: ${nutritions.VITC.quantity} ${nutritions.VITC.unit}</div>`;
-          
-          ings += `<div class="card-title"> ${nutritions.VITK1.label}: ${nutritions.VITK1.quantity} ${nutritions.VITK1.unit}</div>`;
-          ings += `<div class="card-title"> ${nutritions.ZN.label}: ${nutritions.ZN.quantity} ${nutritions.ZN.unit}</div>`;
-          
-          return ings;
-          
-      }
-      
-      
-      function resetClock(){
-          var clock = $('.your-clock').FlipClock({
-               
-            });
-          clock.reset(function() {
+    // show all n utritional anaylsis stored inside an array
+    function showNutritionalAnaylsis(nutritions, healthLabels) {
 
-            });
-      }
-      
-      function startClock(){
-          var clock = $('.your-clock').FlipClock({
-               
-            });
-          clock.start(function() {
+      var ings = "";
 
-            });
-          
-          
-      }
-           
-      
-  
-      
+      ings += `<h4>Nutrional Analysis</h4>`;
+      ings += `<h5> Health Labels </h5>`;
+      $.each(healthLabels, function(i, g) {
+        ings += `<div class="card-title">${g}</div>`
+      })
 
-      
+      ings += `<h5> Total Nutrients </h5>`;
+      ings += `<div class="card-title"> ${nutritions.CA.label}: ${nutritions.CA.quantity} ${nutritions.CA.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.CHOCDF.label}: ${nutritions.CHOCDF.quantity} ${nutritions.CHOCDF.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.ENERC_KCAL.label}: ${nutritions.ENERC_KCAL.quantity} ${nutritions.ENERC_KCAL.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.FAMS.label}: ${nutritions.FAMS.quantity} ${nutritions.FAMS.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.FAPU.label}: ${nutritions.FAPU.quantity} ${nutritions.FAPU.unit}</div>`;
+
+      ings += `<div class="card-title"> ${nutritions.FASAT.label}: ${nutritions.FASAT.quantity} ${nutritions.FASAT.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.FAT.label}: ${nutritions.FAT.quantity} ${nutritions.FAT.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.FE.label}: ${nutritions.FE.quantity} ${nutritions.FE.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.FIBTG.label}: ${nutritions.FIBTG.quantity} ${nutritions.FIBTG.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.FOLDFE.label}: ${nutritions.FOLDFE.quantity} ${nutritions.FOLDFE.unit}</div>`;
+
+      ings += `<div class="card-title"> ${nutritions.FOLFD.label}: ${nutritions.FOLFD.quantity} ${nutritions.FOLFD.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.K.label}: ${nutritions.K.quantity} ${nutritions.K.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.MG.label}: ${nutritions.MG.quantity} ${nutritions.MG.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.NA.label}: ${nutritions.NA.quantity} ${nutritions.NA.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.NIA.label}: ${nutritions.NIA.quantity} ${nutritions.NIA.unit}</div>`;
+
+      ings += `<div class="card-title"> ${nutritions.P.label}: ${nutritions.P.quantity} ${nutritions.P.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.PROCNT.label}: ${nutritions.PROCNT.quantity} ${nutritions.PROCNT.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.RIBF.label}: ${nutritions.RIBF.quantity} ${nutritions.RIBF.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.SUGAR.label}: ${nutritions.SUGAR.quantity} ${nutritions.SUGAR.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.THIA.label}: ${nutritions.THIA.quantity} ${nutritions.THIA.unit}</div>`;
+
+      ings += `<div class="card-title"> ${nutritions.TOCPHA.label}: ${nutritions.TOCPHA.quantity} ${nutritions.TOCPHA.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.VITA_RAE.label}: ${nutritions.VITA_RAE.quantity} ${nutritions.VITA_RAE.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.VITB6A.label}: ${nutritions.VITB6A.quantity} ${nutritions.VITB6A.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.VITB12.label}: ${nutritions.VITB12.quantity} ${nutritions.VITB12.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.VITC.label}: ${nutritions.VITC.quantity} ${nutritions.VITC.unit}</div>`;
+
+      ings += `<div class="card-title"> ${nutritions.VITK1.label}: ${nutritions.VITK1.quantity} ${nutritions.VITK1.unit}</div>`;
+      ings += `<div class="card-title"> ${nutritions.ZN.label}: ${nutritions.ZN.quantity} ${nutritions.ZN.unit}</div>`;
+
+      return ings;
+
+    }
+
+    // reset timer
+    function resetClock() {
+      var clock = $('.your-clock').FlipClock({});
+      clock.reset(function() {});
+    }
+    // start timer
+    function startClock() {
+      var clock = $('.your-clock').FlipClock({});
+      clock.start(function() {});
+    }
+
+    function searchYT(q) {
+      $.ajax({
+        type: 'GET',
+        url: `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent('how to cook ' + q).replace(/%20/g, "+")}&key=AIzaSyDmB6TULhFXqjaAM0mL--3d0iHu3C3IqYc`,
+        success: function(res) {
+          onYouTubeIframeAPIReady(res.items[0].id.videoId)
+        },
+        error: function(err) {
+          // PUTANG INA WAG MO KAKAILIMUTAN
+        }
+      })
+      return q
+    }
+
   </script>
-   
-<div id="modal1" class="modal">
-                            <div class="modal-content" id="modalContent">
-                                <h4>Nutritional Anaylsis</h4>
-                                    
-                                </div>
-                            <div class="modal-footer">
-                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-                            </div>
-                          </div>
-</body>
+  <!-- modal for nutritional analysis -->
+  <div id="modal1" class="modal">
+    <div class="modal-content" id="modalContent">
+      <h4>Nutritional Anaylsis</h4>
 
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+
+    function onYouTubeIframeAPIReady(id) {
+      if (id) {
+        console.log('test', id)
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: id,
+        });
+      }
+    }
+
+  </script>
+
+</body>
 </html>
